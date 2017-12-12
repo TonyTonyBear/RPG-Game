@@ -20,6 +20,8 @@ public class PlayerMotor : MonoBehaviour {
        if(target != null)
         {
             agent.SetDestination(target.position);
+
+            FaceTarget();
         }
     }
 
@@ -31,12 +33,23 @@ public class PlayerMotor : MonoBehaviour {
     public void FollowTarget(Interactable newTarget)
     {
         target = newTarget.transform;
+
         agent.stoppingDistance = newTarget.radius * .8f;
+        agent.updateRotation = false;
     }
 
     public void StopFollowingTarget()
     {
         target = null;
+
         agent.stoppingDistance = 0f;
+        agent.updateRotation = true;
+    }
+
+    void FaceTarget()
+    {
+        Vector3 direction = (target.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
     }
 }
