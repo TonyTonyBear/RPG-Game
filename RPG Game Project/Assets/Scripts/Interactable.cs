@@ -9,6 +9,12 @@ public class Interactable : MonoBehaviour
 
     bool hasInteracted = false;
 
+    public virtual void Interact()
+    {
+        //This method should be overwritten.
+        Debug.Log("Interacting with " + name);
+    }
+
     void Update()
     {
         if(isFocus && !hasInteracted)
@@ -17,8 +23,7 @@ public class Interactable : MonoBehaviour
             
             if(distance <= radius)
             {
-                Debug.Log("INTERACT");
-
+                Interact();
                 hasInteracted = true;
             }
         }
